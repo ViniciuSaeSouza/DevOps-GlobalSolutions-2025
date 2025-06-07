@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+/opt/oracle/startup/entrypoint.sh "$@" &
+
+echo "Esperando bd carregar..."
+until echo "SELECT 1 FROM DUAL;" | sqlplus -S system/1234@//localhost:1521/XEPDB1 > /dev/null; do
+  sleep 5
+done
+echo "Banco de dados carregado!."
+
+# Executa os scripts SQL em ordem
+sqlplus system/1234@//localhost:1521/XEPDB1 @/docker-entrypoint-initdb.d/modelo_fisico.sql
+sqlplus system/1234@//localhost:1521/XEPDB1 @/docker-entrypoint-initdb.d/procedures.sql
+sqlplus system/1234@//localhost:1521/XEPDB1 @/docker-entrypoint-initdb.d/pl_sql.sql
+sqlplus system/1234@//localhost:1521/XEPDB1 @/docker-entrypoint-initdb.d/inserts.sql
+
+echo "Script Sql executado com sucesso!."
+
+wait $!

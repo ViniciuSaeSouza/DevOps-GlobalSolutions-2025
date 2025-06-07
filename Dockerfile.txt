@@ -1,0 +1,10 @@
+docker run -d \
+--name oracle-db-container \
+-p 1521:1521 \
+-e ORACLE_PWD=1234 \
+-e DB_CHARACTERSET=AL32UTF8 \
+-v oracle_data:/opt/oracle/oradata \
+-v ./entrypoint.sh:/usr/local/bin/entrypoint.sh \ 
+-v ./sql:/docker-entrypoint-initdb.d \
+--entrypoint /usr/local/bin/entrypoint.sh \ 
+container-registry.oracle.com/database/express:21.3.0-xe
