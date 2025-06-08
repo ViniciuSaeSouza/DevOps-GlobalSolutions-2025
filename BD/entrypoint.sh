@@ -20,7 +20,7 @@ sleep 3
 echo "Tabelas criadas!"
 
 echo "Fazendo os inserts nas tabelas..."
-sqlplus system/1234@//localhost:1521/XEPDB1 @/docker-entrypoint-initdb.d/insertsv2.sql
+sqlplus system/1234@//localhost:1521/XEPDB1 @/docker-entrypoint-initdb.d/inserts.sql
 sleep 3
 echo "Inserts feitos!"
 
